@@ -6,12 +6,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1;
 
-namespace WebApplication5.Controllers
+namespace WebApplication5.ControllersSET
 {
     [ApiController]
     [Route("[controller]")]
-    public class NaviController : ControllerBase
+    public class NaviControllerSET : ControllerBase
     {
+
         private static List<string> NickNames = new List<string>()
         {
             "s1mple", "electronic", "Boombl4", "Perfecto", "b1t"
@@ -22,15 +23,15 @@ namespace WebApplication5.Controllers
             "awp", "rifle", "captain", "farmer", "rifle"
         };
 
-        private readonly ILogger<NaviController> _logger;
+        private readonly ILogger<NaviControllerSET> _logger;
 
-        public NaviController(ILogger<NaviController> logger)
+        public NaviControllerSET(ILogger<NaviControllerSET> logger)
         {
             _logger = logger;
         }
 
         // Дефолтный состав команды
-        private static List<Navi> navi = new List<Navi>()
+        public static List<Navi> navi = new List<Navi>()
         {
             new Navi { NickName = NickNames[0],TeamJoinDate = DateTime.Now, Position =Positions[0] },
             new Navi { NickName = NickNames[1],TeamJoinDate = DateTime.Now, Position =Positions[1] },
@@ -38,14 +39,6 @@ namespace WebApplication5.Controllers
             new Navi { NickName = NickNames[3],TeamJoinDate = DateTime.Now, Position =Positions[3] },
             new Navi { NickName = NickNames[4],TeamJoinDate = DateTime.Now, Position =Positions[4] },
         };
-        
-
-        [HttpGet]
-        public IEnumerable<Navi> Get()
-        {
-            return navi;
-        }
-
         [HttpPost]
         public StatusCodeResult Post(string nickname, string position)
         {
@@ -63,14 +56,14 @@ namespace WebApplication5.Controllers
 
                 return StatusCode(200);
             }
-            
+
             return StatusCode(204);
         }
 
         [HttpDelete]
         public StatusCodeResult Delete(string nickName)
         {
-            if (NickNames.FindIndex(0,NickNames.Count, x => x.Equals(nickName)) == -1)
+            if (NickNames.FindIndex(0, NickNames.Count, x => x.Equals(nickName)) == -1)
             {
                 return StatusCode(204);
             }
