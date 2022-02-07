@@ -46,7 +46,6 @@ namespace WebApplication5.ControllersSET
             {
                 navi.Add(new Navi
                 {
-
                     NickName = nickname,
                     TeamJoinDate = DateTime.Now,
                     Position = position
