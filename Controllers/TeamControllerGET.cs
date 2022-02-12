@@ -6,17 +6,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1;
 
-namespace WebApplication5.ControllersGET
+namespace WebApplication5.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NaviControllerGET : ControllerBase
+    public class TeamControllerGET : ControllerBase
     {
 
         [HttpGet]
-        public IEnumerable<Navi> Get()
+        public IEnumerable<Team> Get()
         {
-            return WebApplication5.ControllersSET.NaviControllerSET.navi;
+            return PlayerControllerSET.team;
         }
     }
 }
