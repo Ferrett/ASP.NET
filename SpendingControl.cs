@@ -2,7 +2,7 @@ using System;
 
 namespace WebApplication2
 {
-    public class WeatherForecast
+    public class SpendingControl
     {
         public DateTime Date { get; set; }
 
