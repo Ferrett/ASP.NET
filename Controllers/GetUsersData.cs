@@ -28,7 +28,7 @@ namespace WebApplication4
         {
             List<PersonalData> tables = new List<PersonalData>();
 
-            using (SqlConnection connection = new SqlConnection($@"Data Source=PRIKHODPC;Password=;User ID=User;Initial Catalog=Personal_Data;Integrated Security=True;"))
+            using (SqlConnection connection = new SqlConnection($@"Data Source=tcp:prikhodpc.database.windows.net,1433;Initial Catalog=User_Data;User Id=PRIKHOD@prikhodpc;Password=12345_qwert"))
             {
                 connection.Open();
                 string oString = $"SELECT * FROM [DATA];";

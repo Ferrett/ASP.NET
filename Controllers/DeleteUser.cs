@@ -22,7 +22,7 @@ namespace WebApplication4
             {
                 if (item.Login == login && BCrypt.Net.BCrypt.Verify(password, item.HashPass) == true)
                 {
-                    using (SqlConnection connection = new SqlConnection($@"Data Source=PRIKHODPC;Password=;User ID=User;Initial Catalog=Personal_Data;Integrated Security=True;"))
+                    using (SqlConnection connection = new SqlConnection($@"Data Source=tcp:prikhodpc.database.windows.net,1433;Initial Catalog=User_Data;User Id=PRIKHOD@prikhodpc;Password=12345_qwert"))
                     {
                         connection.Open();
 

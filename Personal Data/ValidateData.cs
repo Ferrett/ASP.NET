@@ -17,7 +17,7 @@ namespace WebApplication4
 
         public static bool CheckLogin(string login)
         {
-            if (login.Length < 5 || login.Length > 30)
+            if (login.Length < 3 || login.Length > 30)
                 return false;
 
             return true;
