@@ -10,28 +10,29 @@ namespace WebApplication4
 {
     [ApiController]
     [Route("[controller]")]
-    public class PersonalDataGET : ControllerBase
+    public class GetUsersData : ControllerBase
     {
-        private readonly ILogger<PersonalDataGET> _logger;
-        public PersonalDataGET(ILogger<PersonalDataGET> logger)
+        private readonly ILogger<GetUsersData> _logger;
+        public GetUsersData(ILogger<GetUsersData> logger)
         {
             _logger = logger;
         }
 
-
+       
         [HttpGet]
         public IEnumerable<PersonalData> GetDataFromDB()
+        {
+            return GetUsers();
+        }
+        public  static IEnumerable<PersonalData> GetUsers()
         {
             List<PersonalData> tables = new List<PersonalData>();
 
             using (SqlConnection connection = new SqlConnection($@"Data Source=PRIKHODPC;Password=;User ID=User;Initial Catalog=Personal_Data;Integrated Security=True;"))
             {
                 connection.Open();
-
                 string oString = $"SELECT * FROM [DATA];";
-
                 SqlCommand oCmd = new SqlCommand(oString, connection);
-
                 using (SqlDataReader oReader = oCmd.ExecuteReader())
                 {
                     while (oReader.Read())
@@ -44,14 +45,11 @@ namespace WebApplication4
                             DateTime.Parse(oReader["BDAY"].ToString()),
                             oReader["EMAIL"].ToString(),
                             role.GetRole()
-
                          ));
                     }
                 }
-
                 connection.Close();
             }
-
             return tables;
         }
     }
