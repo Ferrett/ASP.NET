@@ -14,14 +14,19 @@ namespace WebApplication5.Controllers
     {
 
         [HttpGet]
-        public Player Get(string teamName, string playerName)
+        public Player Get(string teamName, string playerName, string token)
         {
-            if (PlayerControllerSET.FindTeamID(teamName) == -1 || PlayerControllerSET.FindPlayerID(teamName,playerName) == -1)
+            if (GetTokenController.CheckToken(token))
             {
-                return null;
+                if (PlayerControllerSET.FindTeamID(teamName, token) == -1 || PlayerControllerSET.FindPlayerID(teamName, playerName, token) == -1)
+                {
+                    return null;
+                }
+
+                return PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName, token)].Players[PlayerControllerSET.FindPlayerID(teamName, playerName, token)];
             }
-          
-            return PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName)].Players[PlayerControllerSET.FindPlayerID(teamName,playerName)];
+           
+            return null;
         }
     }
 }

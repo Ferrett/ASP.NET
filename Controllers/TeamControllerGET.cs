@@ -14,9 +14,13 @@ namespace WebApplication5.Controllers
     {
 
         [HttpGet]
-        public IEnumerable<Team> Get()
+        public IEnumerable<Team> Get(string token)
         {
-            return PlayerControllerSET.team;
+            if (GetTokenController.CheckToken(token))
+            {
+                return PlayerControllerSET.team;
+            }
+            return null;
         }
     }
 }

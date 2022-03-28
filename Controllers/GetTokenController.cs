@@ -14,17 +14,15 @@ namespace WebApplication5.Controllers
     [Route("[controller]")]
     public class GetTokenController : ControllerBase
     {
-        public string hash;
-
-        
+        public static string serverToken;
 
         [HttpGet]
         public StatusCodeResult Get(string email)
         {
             try
             {
-                hash = BCrypt.Net.BCrypt.HashPassword($"{DateTime.Now.ToString()}{DateTime.Now.Millisecond.ToString()}");
-                SendEmail(email,hash);
+                serverToken = BCrypt.Net.BCrypt.HashPassword($"{DateTime.Now.ToString()}{DateTime.Now.Millisecond.ToString()}");
+                SendEmail(email,serverToken);
             }
             catch (Exception)
             {
@@ -35,7 +33,16 @@ namespace WebApplication5.Controllers
             return StatusCode(200);
         }
 
-        private void SendEmail(string email,string hash)
+        public static bool CheckToken(string token)
+        {
+           
+            if (serverToken!=null &&serverToken == token )
+                return true;
+            else
+                return false;
+        }
+
+        public static void SendEmail(string email,string hash)
         {
             var fromAddress = new MailAddress("vovkaprikhod@gmail.com", "Automatic Email");
             var toAddress = new MailAddress($"{email}", "To Name");

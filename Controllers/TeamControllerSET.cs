@@ -19,42 +19,55 @@ namespace WebApplication5.Controllers
         }
 
         [HttpPost]
-        public StatusCodeResult Post(string teamName, Game discipline)
+        public StatusCodeResult Post(string teamName, Game discipline,string token)
         {
-            PlayerControllerSET.team.Add(new Team(teamName,discipline, DateTime.Now, new List<Player>()));
+            if (GetTokenController.CheckToken(token))
+            {
+                PlayerControllerSET.team.Add(new Team(teamName, discipline, DateTime.Now, new List<Player>()));
 
-            return StatusCode(200);
+                return StatusCode(200);
+            }
+            return StatusCode(401);
         }
 
         [HttpDelete]
-        public StatusCodeResult Delete(string teamName)
+        public StatusCodeResult Delete(string teamName, string token)
         {
-            if (PlayerControllerSET.FindTeamID(teamName) == -1)
+            if (GetTokenController.CheckToken(token))
             {
-                return StatusCode(204);
+
+                if (PlayerControllerSET.FindTeamID(teamName, token) == -1)
+                {
+                    return StatusCode(204);
+                }
+
+                PlayerControllerSET.team.Remove(PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName, token)]);
+
+                return StatusCode(200);
             }
-
-            PlayerControllerSET.team.Remove(PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName)]);
-
-            return StatusCode(200);
+            return StatusCode(401);
         }
 
         [HttpPatch]
-        public StatusCodeResult Patch(string teamName, string newTeamName, Game newDiscipline)
+        public StatusCodeResult Patch(string teamName, string newTeamName, Game newDiscipline, string token)
         {
-            if (PlayerControllerSET.FindTeamID(teamName) == -1)
+            if (GetTokenController.CheckToken(token))
             {
-                return StatusCode(204);
+                if (PlayerControllerSET.FindTeamID(teamName, token) == -1)
+                {
+                    return StatusCode(204);
+                }
+
+
+                PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName, token)] = new Team(
+                    newTeamName,
+                    newDiscipline,
+                    PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName, token)].CreationDate,
+                    PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName, token)].Players);
+
+                return StatusCode(200);
             }
-
-
-            PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName)] = new Team(
-                newTeamName,
-                newDiscipline,
-                PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName)].CreationDate,
-                PlayerControllerSET.team[PlayerControllerSET.FindTeamID(teamName)].Players);
-
-            return StatusCode(200);
+            return StatusCode(401);
         }
     }
 }
