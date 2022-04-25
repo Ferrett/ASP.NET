@@ -56,6 +56,7 @@ namespace TextApi.Controllers
 
            
         }
+        
         public static string GetTextFromImage(Uri url)
         {
             ImageAnnotatorClient client = ImageAnnotatorClient.Create();
