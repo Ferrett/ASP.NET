@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
 
 namespace TextApi.Controllers
 {
@@ -16,19 +17,28 @@ namespace TextApi.Controllers
         [HttpGet]
         public string Get(int categoryID)
         {
-            string data = string.Empty;
+
+            string jsonString = string.Empty;
             using (SqlConnection connection = new SqlConnection($@"Data Source = sql5108.site4now.net; User ID = db_a852fc_prikhod3228_admin; Password = 12345qwert; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"))
             {
                 connection.Open();
 
-                string stringCommand = $"SELECT * FROM [PRODUCT] WHERE [ID] = {categoryID};";
+                string stringCommand = $"SELECT * FROM [PRODUCT] WHERE [CATEGORY_ID] = {categoryID};";
                 SqlCommand oCmd = new SqlCommand(stringCommand, connection);
                 using (SqlDataReader oReader = oCmd.ExecuteReader())
                 {
                     while (oReader.Read())
                     {
-                        data += oReader["NAME"].ToString();
-                    }
+                        Product product = new Product
+                        {
+                            ID = int.Parse(oReader["ID"].ToString()),
+                            Price = int.Parse(oReader["PRICE"].ToString()),
+                            Name = oReader["NAME"].ToString(),
+                            Category_ID = oReader["CATEGORY_ID"].ToString(),
+                        };
+
+                        jsonString += JsonSerializer.Serialize(product)+"\n";
+                    };  
                 }
 
                 SqlCommand command = new SqlCommand(stringCommand, connection);
@@ -36,8 +46,8 @@ namespace TextApi.Controllers
 
                 connection.Close();
             }
-
-            return data;
+            
+            return jsonString;
         }
         
        
