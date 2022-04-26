@@ -12,17 +12,17 @@ namespace TextApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class GetProductsByCategoryIDController : Controller
+    public class GetProductsByName
     {
         [HttpGet]
-        public string Get(int categoryID)
+        public string Get(string name)
         {
             List<Product> products = new List<Product>();
-           
+
             using (SqlConnection connection = new SqlConnection($@"Data Source = sql5108.site4now.net; User ID = db_a852fc_prikhod3228_admin; Password = 12345qwert; Connect Timeout = 30; Encrypt = False; TrustServerCertificate = False; ApplicationIntent = ReadWrite; MultiSubnetFailover = False"))
             {
                 connection.Open();
-                string stringCommand = $"SELECT * FROM [PRODUCT] WHERE [CATEGORY_ID] = {categoryID};";
+                string stringCommand = $"SELECT * FROM [PRODUCT] WHERE [NAME] = '{name}';";
                 SqlCommand oCmd = new SqlCommand(stringCommand, connection);
                 using (SqlDataReader oReader = oCmd.ExecuteReader())
                 {
@@ -36,18 +36,14 @@ namespace TextApi.Controllers
                             Category_ID = oReader["CATEGORY_ID"].ToString(),
                         });
 
-                    };     
+                    };
                 }
-
-                SqlCommand command = new SqlCommand(stringCommand, connection);
-                command.ExecuteNonQuery();
+                oCmd.ExecuteNonQuery();
 
                 connection.Close();
             }
-            
+
             return JsonSerializer.Serialize(products);
         }
-        
-       
     }
 }
